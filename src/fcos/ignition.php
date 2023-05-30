@@ -6,7 +6,7 @@ $ignition->ignition->version = "3.3.0";
 $ignition->ignition->config = (object)[];
 $ignition->ignition->config->merge = (object)[];
 
-$files = scandir('./configs/fcos');
+$files = scandir('./configs');
 
 foreach($files as $file) {
     $merge = (object)[];
