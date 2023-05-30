@@ -6,11 +6,11 @@ $ignition->ignition->version = "3.3.0";
 $ignition->ignition->config = (object)[];
 $ignition->ignition->config->merge = [];
 
-$files = scandir('./configs');
+$files = glob("configs/*.ign.php");
 
 foreach($files as $file) {
     $merge = (object)[];
-    $merge->source = $_SERVER['HTTP_HOST'] . "/configs/" . $file;
+    $merge->source = $_SERVER['HTTP_HOST'] . "/fcos/configs/" . $file;
     $ignition->ignition->config->merge[] = $merge;
 }
 
