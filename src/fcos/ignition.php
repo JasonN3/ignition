@@ -10,7 +10,7 @@ $files = scandir('./configs');
 
 foreach($files as $file) {
     $merge = (object)[];
-    $merge->source = $_SERVER[HTTP_HOST] . "/configs/" . $file;
+    $merge->source = $_SERVER['HTTP_HOST'] . "/configs/" . $file;
     $ignition->ignition->config->merge[] = $merge;
 }
 
