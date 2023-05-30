@@ -17,4 +17,10 @@ $fleet_lock_server = "";
 // PHP code to generate hostname
 $name_format = "";
 
+//Primary disk device path
+$primary_disk = "/dev/sda";
+
+// Second disk device path
+$second_disk = "/dev/sdb";
+
 ?>
