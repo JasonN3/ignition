@@ -12,12 +12,14 @@ if($fleet_lock_server != "") {
     // Create Trusted User CA Key
     $file = (object)[];
     $file->path = "/etc/zincati/config.d/reboot-manager.toml";
-    $file->append = (object)[];
-    $file->append->compression = "";
+    $file->append = [];
+    $file_content = (object)[];
+    $file_content->compression = "";
     $content = "[updates]
     strategy = \"fleet_lock\"
     fleet_lock.base_url = \"" . $fleet_lock_server . "\"";
-    $file->append->source = "data:," . rawurlencode($content);
+    $file_content->source = "data:," . rawurlencode($content);
+    $file->append[] = $file_content;
     $ignition->storage->files[] = $file;
 }
 

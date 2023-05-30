@@ -1,5 +1,15 @@
 <?php
 
+if (isset($_SERVER['HTTPS']) &&
+    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+  $protocol = 'https://';
+}
+else {
+  $protocol = 'http://';
+}
+
 $ignition = (object)[];
 $ignition->ignition = (object)[];
 $ignition->ignition->version = "3.3.0";
@@ -10,7 +20,7 @@ $files = glob("configs/*.ign.php");
 
 foreach($files as $file) {
     $merge = (object)[];
-    $merge->source = $_SERVER['HTTP_HOST'] . "/fcos/" . $file;
+    $merge->source = $protocol . $_SERVER['HTTP_HOST'] . "/fcos/" . $file;
     $ignition->ignition->config->merge[] = $merge;
 }
 
