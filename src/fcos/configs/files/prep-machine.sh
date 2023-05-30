@@ -14,7 +14,7 @@ mkdir /etc/containerd || true
 containerd config default > /etc/containerd/config.toml
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
 
-systemctl enable kubelet
+ln -s /usr/lib/systemd/system/kubelet.service /etc/systemd/system/multi-user.target.wants/kubelet.service
 
 systemctl disable docker.socket
 
