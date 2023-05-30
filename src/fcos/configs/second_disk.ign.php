@@ -10,6 +10,9 @@ $ignition->storage = (object)[];
 $ignition->storage->disks = [];
 $ignition->storage->filesystems = [];
 
+$ignition->systemd = (object)[];
+$ignition->systemd->units = [];
+
 $disk = (object)[];
 $disk->device = $secondary_disk;
 $disk->wipeTable = true;
@@ -27,6 +30,12 @@ $filesystem->format = "xfs";
 $filesystem->path = "/var/lib/containerd";
 $filesystem->label = "containerd";
 $ignition->storage->filesystems[] = $filesystem;
+
+$systemd_unit = (object)[];
+$systemd_unit->name = "var-lib-containerd.mount";
+$systemd_unit->enabled = true;
+$systemd_unit->contents = file_get_contents("files/var-lib-containerd.mount");
+$ignition->systemd->units[] = $systemd_unit;
 
 print(json_encode($ignition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 ?>

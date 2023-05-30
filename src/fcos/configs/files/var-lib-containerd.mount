@@ -1,0 +1,10 @@
+[Unit]
+Before=local-fs.target
+
+[Mount]
+What=/dev/disk/by-partlabel/containerd
+Where=/var/lib/containerd
+Type=xfs
+
+[Install]
+WantedBy=local-fs.target
