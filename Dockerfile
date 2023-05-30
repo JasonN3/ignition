@@ -1,3 +1,3 @@
-FROM docker.io/library/php:fpm-alpine
+FROM docker.io/library/php:apache
 
 COPY src/ /var/www/html/
