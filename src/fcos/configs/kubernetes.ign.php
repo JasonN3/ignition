@@ -36,7 +36,7 @@ LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
 ";
-$override->content = str_replace("\n", "\\n", $content);
+$override->contents = $content;
 $systemd_unit->dropins[] = $override;
 $ignition->systemd->units[] = $systemd_unit;
 

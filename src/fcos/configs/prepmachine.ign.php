@@ -23,7 +23,7 @@ $ignition->storage->files[] = $file;
 $systemd_unit = (object)[];
 $systemd_unit->name = "prep-machine.service";
 $systemd_unit->enabled = true;
-$systemd_unit->contents = str_replace("\n", "\\n", file_get_contents("files/prep-machine.service"));
+$systemd_unit->contents = file_get_contents("files/prep-machine.service");
 $ignition->systemd->units[] = $systemd_unit;
 
 
