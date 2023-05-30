@@ -6,7 +6,7 @@ ConditionFirstBoot=true
 Type=oneshot
 RemainAfterExit=true
 ExecStartPre=bash -c "while ! curl https://packages.cloud.google.com 1>/dev/null; do sleep 1; done"
-ExecStart=/bin/bash /tmp/prep-machine.sh
+ExecStart=/bin/bash /usr/local/src/prep-machine.sh
 
 [Install]
 WantedBy=multi-user.target
