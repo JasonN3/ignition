@@ -7,8 +7,9 @@ $ignition->ignition->version = "3.3.0";
 
 $ignition->storage = (object)[];
 $ignition->storage->files = [];
-$ignition->storage->directories = [];
-$ignition->storage->links = [];
+
+$ignition->systemd = (object)[];
+$ignition->systemd->units = [];
 
 // Add Kubernetes Repo
 $file = (object)[];
@@ -19,14 +20,12 @@ $file->contents->source = "data:," . rawurlencode(file_get_contents("files/kuber
 $ignition->storage->files[] = $file;
 
 // Override service entries
-$directory = (object)[];
-$directory->path = "/etc/systemd/system/containerd.service.d";
-$ignition->storage->directories[] = $directory;
-
-$file = (object)[];
-$file->path = "/etc/systemd/system/containerd.service.d/override.conf";
-$file->contents = (object)[];
-$file->contents->compression = "";
+$systemd_unit = (object)[];
+$systemd_unit->name = "containerd.service";
+$systemd_unit->enabled = true;
+$systemd_unit->dropins = [];
+$override = (object)[];
+$override->name = "override.conf";
 $content = "[Service]
 Restart=always
 RestartSec=5
@@ -37,14 +36,10 @@ LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
 ";
-$file->contents->source = "data:," . rawurlencode($content);
-$ignition->storage->files[] = $file;
+$override->content = str_replace("\n", "\\n", $content);
+$systemd_unit->dropins[] = $override;
+$ignition->systemd->units[] = $systemd_unit;
 
-// Enable containerd
-$link = (object)[];
-$link->path = "/etc/systemd/system/multi-user.target.wants/containerd.service";
-$link->target = "/usr/lib/systemd/system/containerd.service";
-$ignition->storage->links[] = $link;
 
 // Enable modules
 $file = (object)[];

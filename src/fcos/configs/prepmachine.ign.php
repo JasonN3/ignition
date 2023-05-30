@@ -7,7 +7,9 @@ $ignition->ignition->version = "3.3.0";
 
 $ignition->storage = (object)[];
 $ignition->storage->files = [];
-$ignition->storage->links = [];
+
+$ignition->systemd = (object)[];
+$ignition->systemd->units = [];
 
 // Add prep-machine.sh script
 $file = (object)[];
@@ -18,19 +20,11 @@ $file->contents->source = "data:," . rawurlencode(file_get_contents("files/prep-
 $ignition->storage->files[] = $file;
 
 // Add prep-machine service
-$file = (object)[];
-$file->path = "/etc/systemd/system/prep-machine.service";
-$file->contents = (object)[];
-$file->contents->compression = "";
-$file->contents->source = "data:," . rawurlencode(file_get_contents("files/prep-machine.service"));
-$ignition->storage->files[] = $file;
-
-// Enable pre-machine service
-$link = (object)[];
-$link->path = "/etc/systemd/system/multi-user.target.wants/prep-machine.service";
-$link->target = "/etc/systemd/system/prep-machine.service";
-$ignition->storage->links[] = $link;
-
+$systemd_unit = (object)[];
+$systemd_unit->name = "prep-machine.service";
+$systemd_unit->enabled = true;
+$systemd_unit->contents = str_replace("\n", "\\n", file_get_contents("files/prep-machine.service"));
+$ignition->systemd->units[] = $systemd_unit;
 
 
 print(json_encode($ignition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
