@@ -40,6 +40,7 @@ $ignition->storage->files[] = $file;
 // Configure time sync
 $file = (object)[];
 $file->path = "/etc/chrony.conf";
+$file->overwrite = true;
 $file->contents = (object)[];
 $file->contents->compression = "";
 $content = "driftfile /var/lib/ntp/drift
