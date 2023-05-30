@@ -21,7 +21,7 @@ menu Select a channel
 
 $stable = json_decode(file_get_contents("https://builds.coreos.fedoraproject.org/streams/stable.json"));
 $stable_version = $stable->architectures->x86_64->artifacts->metal->release;
-echo "item Stable (" . $stable_version . ") stable\n";
+echo "item stable Stable (" . $stable_version . ")\n";
 ?>
 choose channel
 
