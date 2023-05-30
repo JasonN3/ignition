@@ -22,7 +22,7 @@ $disk->partitions[] = $partition;
 $ignition->storage->disks[] = $disk;
 
 $filesystem = (object)[];
-$filesystem->device = "/dev/disk/by-label/containerd";
+$filesystem->device = "/dev/disk/by-partlabel/containerd";
 $filesystem->format = "xfs";
 $filesystem->path = "/var/lib/containerd";
 $filesystem->label = "containerd";
@@ -30,5 +30,3 @@ $ignition->storage->filesystems[] = $filesystem;
 
 print(json_encode($ignition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 ?>
-
-/var/lib/containerd
