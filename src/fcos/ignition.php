@@ -10,7 +10,7 @@ $files = glob("configs/*.ign.php");
 
 foreach($files as $file) {
     $merge = (object)[];
-    $merge->source = $_SERVER['HTTP_HOST'] . "/fcos/configs/" . $file;
+    $merge->source = $_SERVER['HTTP_HOST'] . "/fcos/" . $file;
     $ignition->ignition->config->merge[] = $merge;
 }
 
