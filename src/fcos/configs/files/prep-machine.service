@@ -1,0 +1,12 @@
+[Unit]
+Requires=network-online.target
+ConditionFirstBoot=true
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStartPre=bash -c "while ! curl https://packages.cloud.google.com 1>/dev/null; do sleep 1; done"
+ExecStart=/bin/bash /usr/local/src/prep-machine.sh
+
+[Install]
+WantedBy=multi-user.target
