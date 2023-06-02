@@ -18,19 +18,25 @@ echo "set base " . $protocol . $_SERVER['HTTP_HOST'];
 
 menu Select a channel
 <?php
+$streams = ['stable', 'testing', 'next'];
+$channel = (object)[];
 
-$stable = json_decode(file_get_contents("https://builds.coreos.fedoraproject.org/streams/stable.json"));
-$stable_version = $stable->architectures->x86_64->artifacts->metal->release;
-echo "item stable Stable (" . $stable_version . ")\n";
+foreach($streams as $channel) {
+  $channel_info = json_decode(file_get_contents("https://builds.coreos.fedoraproject.org/streams/" . $channel . ".json"));
+  $channel_versions[$channel] = $channel_info->architectures->x86_64->artifacts->metal->release;
+  echo "item " . $channel . " " . ucfirst($channel) . " (" . $channel_versions[$channel] . ")\n";
+}
 ?>
 choose channel
 
 goto ${channel}
 
 <?php
-echo ":stable\n";
-echo "set version $stable_version\n";
-echo "goto os_menu\n";
+foreach($streams as $channel) {
+  echo ":" . $channel . "\n";
+  echo "set version " . $channel_versions[$channel] . "\n";
+  echo "goto os_menu\n";
+}
 ?>
 
 
