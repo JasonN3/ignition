@@ -94,6 +94,7 @@ foreach($directories as $directory) {
 // Configure Containerd
 $file = (object)[];
 $file->path = "/etc/containerd/config.toml";
+$file->overwrite = true;
 $file->contents = (object)[];
 $file->contents->compresssion = "";
 $content = "version = 2
