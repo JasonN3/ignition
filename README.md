@@ -11,9 +11,9 @@ This container hosts an http server that will generate ignition files for a Fedo
 - Automatic installation of `kubeadm` and `kubelet`
 
 ## Usage
-1. Launch the container on a system
+1. As root, launch the container on a system
 ```bash
-sudo podman -d -p 8080:80 -v ignition:/var/www/html/fcos/customizations ghcr.io/jasonn3/ignition:latest
+podman -d --network host --volume ignition:/var/www/html/fcos/customizations ghcr.io/jasonn3/ignition:latest
 ```
 1. Edit the cusomizations
 ```bash
