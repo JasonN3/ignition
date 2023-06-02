@@ -13,7 +13,7 @@ This container hosts an http server that will generate ignition files for a Fedo
 ## Usage
 1. As root, launch the container on a system
 ```bash
-podman -d --network host --volume ignition:/var/www/html/fcos/customizations ghcr.io/jasonn3/ignition:latest
+podman -d --network host --volume ignition:/var/www/html/fcos/configs/customizations ghcr.io/jasonn3/ignition:latest
 ```
 1. Edit the cusomizations
 ```bash
