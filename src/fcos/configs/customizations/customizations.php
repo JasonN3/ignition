@@ -39,7 +39,7 @@ $registry_auth[] = [
     "registry" => "quay",
     "username" => "user",
     "password" => "your password"
-]
+];
 */
 
 ?>
