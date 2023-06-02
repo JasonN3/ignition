@@ -88,7 +88,7 @@ $directories = ["/var/lib/etcd", "/etc/kubernetes/pki", "/etc/kubernetes/pki/etc
 foreach($directories as $directory) {
     $dir = (object)[];
     $dir->path = $directory;
-    $igntion->storage->directories[] = $dir;
+    $ignition->storage->directories[] = $dir;
 }
 
 // Configure Containerd
