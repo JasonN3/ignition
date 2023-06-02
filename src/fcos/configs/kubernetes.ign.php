@@ -112,7 +112,7 @@ $file->contents->compression = "";
 $content = "version = 2
 
 [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.options]
-  SystemdCgroup = false
+  SystemdCgroup = true
 ";
 $file->contents->source = "data:," . rawurlencode($content);
 $ignition->storage->files[] = $file;
