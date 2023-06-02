@@ -165,5 +165,14 @@ foreach($registry_auth as $auth) {
     $ignition->storage->files[] = $file;
 }
 
+// Create kubeadm config for init and join
+$file = (object)[];
+$file->path = "/home/core/kubeadm.yaml";
+$file->contents = (object)[];
+$file->contents->compression = "";
+$content = file_get_contents("files/kubeadm.yaml");
+$file->contents->source = "data:," . rawurlencode($content);
+$ignition->storage->files[] = $file;
+
 print(json_encode($ignition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 ?>
