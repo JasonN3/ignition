@@ -21,6 +21,6 @@ $name_format = "";
 $primary_disk = "/dev/sda";
 
 // Second disk device path
-$second_disk = "/dev/sdb";
+$secondary_disk = "/dev/sdb";
 
 ?>
