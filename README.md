@@ -20,7 +20,7 @@ sudo podman -d -p 8080:80 -v ignition:/var/www/html/fcos/customizations ghcr.io/
 vi $(podman volume mount ignition)/customizations.php
 ```
 
-There is an iPXE script available at `http://_your_server_/fcos/fcos.ipxe.php`. You can configure DHCP to boot in to iPXE and chain to the script or you can build a custom iPXE ISO with an embedded script. To build a custom iPXE ISO, please follow iPXE's instructions available (here)[https://ipxe.org/download]. Whether you are building your own image or using a pre-built image, make sure that HTTPS is an enabled protocol. HTTPS is used when downloading the images from Fedora Project's website.
+There is an iPXE script available at `http://_your_server_/fcos/fcos.ipxe.php`. You can configure DHCP to boot in to iPXE and chain to the script or you can build a custom iPXE ISO with an embedded script. To build a custom iPXE ISO, please follow iPXE's instructions available [here](https://ipxe.org/download). Whether you are building your own image or using a pre-built image, make sure that HTTPS is an enabled protocol. HTTPS is used when downloading the images from Fedora Project's website.
 
 Enabling HTTPS before building
 This command can be run after `cd ipxe/src` and before running `make`
@@ -40,4 +40,4 @@ EOF
 make bin/ipxe.iso EMBED=script.ipxe
 ```
 
-Once the OS is deployed. Kubernetes can be installed by following the instructions available (here)[https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/]
+Once the OS is deployed. Kubernetes can be installed by following the instructions available [here](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
