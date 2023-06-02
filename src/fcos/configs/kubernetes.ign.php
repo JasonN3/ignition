@@ -96,7 +96,7 @@ $file = (object)[];
 $file->path = "/etc/containerd/config.toml";
 $file->overwrite = true;
 $file->contents = (object)[];
-$file->contents->compresssion = "";
+$file->contents->compression = "";
 $content = "version = 2
 
 imports = [\"/etc/containerd/config.d/*.toml\"]
@@ -108,7 +108,7 @@ $ignition->storage->files[] = $file;
 $file = (object)[];
 $file->path = "/etc/containerd/config.d/cgroups.toml";
 $file->contents = (object)[];
-$file->contents->compresssion = "";
+$file->contents->compression = "";
 $content = "version = 2
 
 [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.options]
@@ -121,7 +121,7 @@ $ignition->storage->files[] = $file;
 $file = (object)[];
 $file->path = "/etc/containerd/config.d/cache.toml";
 $file->contents = (object)[];
-$file->contents->compresssion = "";
+$file->contents->compression = "";
 $content = "version = 2
 
 [plugins.\"io.containerd.grpc.v1.cri\".registry]
@@ -138,7 +138,7 @@ foreach($caching_servers as $cache_srv) {
     $file = (object)[];
     $file->path = "/etc/containerd/certs.d/" . $cache_srv->name . "/hosts.toml";
     $file->contents = (object)[];
-    $file->contents->compresssion = "";
+    $file->contents->compression = "";
     $content = "server = \"" . $cache_srv->server . "\"
 
 [host.\"" . $cache_srv->cache . "\"]
@@ -154,7 +154,7 @@ foreach($registry_auth as $auth) {
     $file = (object)[];
     $file->path = "/etc/containerd/config.d/auth_" . $auth->registry . ".toml";
     $file->contents = (object)[];
-    $file->contents->compresssion = "";
+    $file->contents->compression = "";
     $content = "version = 2
 
 [plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth->registry . "\".auth]
