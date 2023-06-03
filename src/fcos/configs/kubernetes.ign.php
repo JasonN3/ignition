@@ -92,6 +92,7 @@ foreach($directories as $directory) {
 }
 
 // Configure Containerd
+/*
 $file = (object)[];
 $file->path = "/etc/containerd/config.toml";
 $file->overwrite = true;
@@ -103,7 +104,7 @@ imports = [\"/etc/containerd/config.d/*.toml\"]
 ";
 $file->contents->source = "data:," . rawurlencode($content);
 $ignition->storage->files[] = $file;
-
+*/
 // Configure Containerd to use CGroups
 $file = (object)[];
 $file->path = "/etc/containerd/config.d/cgroups.toml";
