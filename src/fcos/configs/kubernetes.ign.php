@@ -91,19 +91,6 @@ foreach($directories as $directory) {
     $ignition->storage->directories[] = $dir;
 }
 
-// Configure Containerd to use CGroups
-$file = (object)[];
-$file->path = "/etc/containerd/config.d/cgroups.toml";
-$file->contents = (object)[];
-$file->contents->compression = "";
-$content = "version = 2
-
-[plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.options]
-  SystemdCgroup = true
-";
-$file->contents->source = "data:," . rawurlencode($content);
-$ignition->storage->files[] = $file;
-
 // Configure caching servers
 $file = (object)[];
 $file->path = "/etc/containerd/config.d/cache.toml";
