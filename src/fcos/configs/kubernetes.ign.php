@@ -168,7 +168,8 @@ foreach($registry_auth as $auth) {
 // Create kubeadm config for init and join
 $file = (object)[];
 $file->path = "/home/core/kubeadm.yaml";
-$file->user = "core";
+$file->user = (object)[];
+$file->user->name = "core";
 $file->contents = (object)[];
 $file->contents->compression = "";
 $content = file_get_contents("files/kubeadm.yaml");
