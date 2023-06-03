@@ -13,4 +13,6 @@ ln -s /usr/lib/systemd/system/kubelet.service /etc/systemd/system/multi-user.tar
 
 systemctl disable docker.socket
 
+sed -i 's/SELINUX=.*/SELINUX=permissive/' /etc/selinux/config
+
 systemctl reboot
