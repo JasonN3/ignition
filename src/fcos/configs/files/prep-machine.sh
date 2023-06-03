@@ -9,6 +9,9 @@ do
   chcon -vt svirt_sandbox_file_t $path
 done
 
+containerd config default > /etc/containerd/config.toml
+sed -i s'/imports = .*/imports = ["\/etc\/containerd\/config.d\/*.toml"]/' /etc/containerd/config.toml
+
 ln -s /usr/lib/systemd/system/kubelet.service /etc/systemd/system/multi-user.target.wants/kubelet.service
 
 systemctl disable docker.socket
