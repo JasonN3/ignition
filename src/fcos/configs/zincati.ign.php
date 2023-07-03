@@ -1,5 +1,6 @@
 <?php
 
+require "defaults.php";
 require "customizations/customizations.php";
 
 $ignition = (object)[];
