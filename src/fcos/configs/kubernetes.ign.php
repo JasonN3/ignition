@@ -106,16 +106,16 @@ $ignition->storage->files[] = $file;
 
 foreach($caching_servers as $cache_srv) {
     $dir = (object)[];
-    $dir->path = "/etc/containerd/certs.d/" . $cache_srv->name;
+    $dir->path = "/etc/containerd/certs.d/" . $cache_srv['name'];
     $ignition->storage->directories[] = $dir;
 
     $file = (object)[];
-    $file->path = "/etc/containerd/certs.d/" . $cache_srv->name . "/hosts.toml";
+    $file->path = "/etc/containerd/certs.d/" . $cache_srv['name'] . "/hosts.toml";
     $file->contents = (object)[];
     $file->contents->compression = "";
-    $content = "server = \"" . $cache_srv->server . "\"
+    $content = "server = \"" . $cache_srv['server'] . "\"
 
-[host.\"" . $cache_srv->cache . "\"]
+[host.\"" . $cache_srv['cache'] . "\"]
   capabilities = [\"pull\", \"resolve\"]
   override_path = true
 ";
@@ -126,14 +126,14 @@ foreach($caching_servers as $cache_srv) {
 // Configure registry authentication
 foreach($registry_auth as $auth) {
     $file = (object)[];
-    $file->path = "/etc/containerd/config.d/auth_" . $auth->registry . ".toml";
+    $file->path = "/etc/containerd/config.d/auth_" . $auth['registry'] . ".toml";
     $file->contents = (object)[];
     $file->contents->compression = "";
     $content = "version = 2
 
-[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth->registry . "\".auth]
-  username = \"" . $auth->username . "\"                          
-  password = \"" . $auth->password . "\"
+[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth['registry'] . "\".auth]
+  username = \"" . $auth['username'] . "\"                          
+  password = \"" . $auth['password'] . "\"
 ";
     $file->contents->source = "data:," . rawurlencode($content);
     $ignition->storage->files[] = $file;
