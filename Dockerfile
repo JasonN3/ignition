@@ -2,7 +2,7 @@ FROM quay.io/fedora/fedora:latest AS ipxe
 
 RUN dnf install -y git gcc binutils make perl xz-devel mtools genisoimage syslinux
 
-RUN git clone https://github.com/ipxe/ipxe.git /ipxe; cd /ipxe/src; sed -i 's/#define DOWNLOAD_PROTO_HTTP/define DOWNLOAD_PROTO_HTTP' config/general.h; make bin/undionly.kpxe; make bin/ipxe.iso
+RUN git clone https://github.com/ipxe/ipxe.git /ipxe; cd /ipxe/src; sed -i 's/#undef DOWNLOAD_PROTO_HTTPS/#define DOWNLOAD_PROTO_HTTPS/' config/general.h; make bin/undionly.kpxe; make bin/ipxe.iso
 
 FROM docker.io/library/php:apache
 

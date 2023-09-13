@@ -20,15 +20,18 @@ podman -d --network host --volume ignition:/var/www/html/fcos/configs/customizat
 vi $(podman volume mount ignition)/customizations.php
 ```
 
-There is an iPXE script available at `http://_your_server_/fcos/fcos.ipxe.php`. You can configure DHCP to boot in to iPXE and chain to the script or you can build a custom iPXE ISO with an embedded script. To build a custom iPXE ISO, please follow iPXE's instructions available [here](https://ipxe.org/download). Whether you are building your own image or using a pre-built image, make sure that HTTPS is an enabled protocol. HTTPS is used when downloading the images from Fedora Project's website.
+There is an iPXE script available at `http://_your_server_/fcos/fcos.ipxe.php`. You can configure DHCP to boot in to iPXE and chain to the script or you can build a custom iPXE ISO with an embedded script.  
+`http://_your_server_/boot/ipxe.iso` and `http://_your_server_/boot/undionly.kpxe` are also available as boot options. They will still use DHCP to find the initial ipxe script.  
 
-Enabling HTTPS before building
+To build a custom iPXE ISO, please follow iPXE's instructions available [here](https://ipxe.org/download). Whether you are building your own image or using a pre-built image, make sure that HTTPS is an enabled protocol. HTTPS is used when downloading the images from Fedora Project's website.
+
+### Enabling HTTPS before building
 This command can be run after `cd ipxe/src` and before running `make`
 ```bash
 sed -i 's/#undef DOWNLOAD_PROTO_HTTPS/#define DOWNLOAD_PROTO_HTTPS/' config/general.h
 ```
 
-Embedding an iPXE script
+### Embedding an iPXE script
 ```bash
 cat << EOF > script.ipxe
 #!ipxe
