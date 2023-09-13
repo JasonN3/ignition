@@ -10,4 +10,3 @@ VOLUME /var/www/html/fcos/customizations
 
 COPY src/ /var/www/html/
 COPY --from=ipxe /ipxe/src/bin/undionly.kpxe /var/www/html/boot/
-COPY --from=ipxe /ipxe/src/bin-x86_64-efi/ipxe.efi /var/www/html/boot/
