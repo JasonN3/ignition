@@ -28,7 +28,7 @@ To build a custom iPXE ISO, please follow iPXE's instructions available [here](h
 ### Enabling HTTPS before building
 This command can be run after `cd ipxe/src` and before running `make`
 ```bash
-sed -i 's/#undef DOWNLOAD_PROTO_HTTPS/#define DOWNLOAD_PROTO_HTTPS/' config/general.h
+sed -i 's/\#undef\sDOWNLOAD_PROTO_HTTPS/\#define DOWNLOAD_PROTO_HTTPS/' config/general.h
 ```
 
 ### Embedding an iPXE script
