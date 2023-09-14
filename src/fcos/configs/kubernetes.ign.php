@@ -1,5 +1,8 @@
 <?php
 
+require "defaults.php";
+require "customizations/customizations.php";
+
 $ignition = (object)[];
 
 $ignition->ignition = (object)[];
@@ -7,6 +10,7 @@ $ignition->ignition->version = "3.3.0";
 
 $ignition->storage = (object)[];
 $ignition->storage->files = [];
+$ignition->storage->directories = [];
 
 $ignition->systemd = (object)[];
 $ignition->systemd->units = [];
@@ -78,7 +82,73 @@ fs.inotify.max_user_watches         = 524288
 $file->contents->source = "data:," . rawurlencode($content);
 $ignition->storage->files[] = $file;
 
+// Prep kubernetes directories
+$directories = ["/var/lib/etcd", "/etc/kubernetes/pki", "/etc/kubernetes/pki/etcd", "/etc/cni/net.d"];
 
+foreach($directories as $directory) {
+    $dir = (object)[];
+    $dir->path = $directory;
+    $ignition->storage->directories[] = $dir;
+}
+
+// Configure caching servers
+$file = (object)[];
+$file->path = "/etc/containerd/config.d/cache.toml";
+$file->contents = (object)[];
+$file->contents->compression = "";
+$content = "version = 2
+
+[plugins.\"io.containerd.grpc.v1.cri\".registry]
+  config_path = \"/etc/containerd/certs.d\"
+";
+$file->contents->source = "data:," . rawurlencode($content);
+$ignition->storage->files[] = $file;
+
+foreach($caching_servers as $cache_srv) {
+    $dir = (object)[];
+    $dir->path = "/etc/containerd/certs.d/" . $cache_srv['name'];
+    $ignition->storage->directories[] = $dir;
+
+    $file = (object)[];
+    $file->path = "/etc/containerd/certs.d/" . $cache_srv['name'] . "/hosts.toml";
+    $file->contents = (object)[];
+    $file->contents->compression = "";
+    $content = "server = \"" . $cache_srv['server'] . "\"
+
+[host.\"" . $cache_srv['cache'] . "\"]
+  capabilities = [\"pull\", \"resolve\"]
+  override_path = true
+";
+    $file->contents->source = "data:," . rawurlencode($content);
+    $ignition->storage->files[] = $file;
+}
+
+// Configure registry authentication
+foreach($registry_auth as $auth) {
+    $file = (object)[];
+    $file->path = "/etc/containerd/config.d/auth_" . $auth['registry'] . ".toml";
+    $file->contents = (object)[];
+    $file->contents->compression = "";
+    $content = "version = 2
+
+[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth['registry'] . "\".auth]
+  username = \"" . $auth['username'] . "\"                          
+  password = \"" . $auth['password'] . "\"
+";
+    $file->contents->source = "data:," . rawurlencode($content);
+    $ignition->storage->files[] = $file;
+}
+
+// Create kubeadm config for init and join
+$file = (object)[];
+$file->path = "/home/core/kubeadm.yaml";
+$file->user = (object)[];
+$file->user->name = "core";
+$file->contents = (object)[];
+$file->contents->compression = "";
+$content = file_get_contents("files/kubeadm.yaml");
+$file->contents->source = "data:," . rawurlencode($content);
+$ignition->storage->files[] = $file;
 
 print(json_encode($ignition, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 ?>

@@ -27,19 +27,19 @@ $secondary_disk = "/dev/sdb";
 $caching_servers = [];
 /*
 $caching_servers[] = [
-    "name"   => "docker.io",
-    "server" => "registry-1.docker.io",
-    "cache"  => "quay/v2/docker_io"
+    name   => "docker.io",
+    server => "registry-1.docker.io",
+    cache  => "quay/v2/docker_io"
 ];
 */
 
 $registry_auth = [];
 /*
 $registry_auth[] = [
-    "registry" => "quay",
-    "username" => "user",
-    "password" => "your password"
-];
+    registry = "quay",
+    username = "user",
+    password = "your password"
+]
 */
 
 ?>

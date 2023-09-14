@@ -1,6 +1,7 @@
 #!ipxe
 <?php
 
+require "configs/defaults.php";
 require "configs/customizations/customizations.php";
 
 if (isset($_SERVER['HTTPS']) &&
