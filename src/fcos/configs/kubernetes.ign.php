@@ -91,53 +91,62 @@ foreach($directories as $directory) {
     $ignition->storage->directories[] = $dir;
 }
 
+// Each section of plugins will be completely overwritten when there is an import
+// All configs should be in a single import
+// https://github.com/containerd/containerd/issues/7982#issuecomment-1447981526
+
 // Configure caching servers
-$file = (object)[];
-$file->path = "/etc/containerd/config.d/cache.toml";
-$file->contents = (object)[];
-$file->contents->compression = "";
-$content = "version = 2
-
-[plugins.\"io.containerd.grpc.v1.cri\".registry]
-  config_path = \"/etc/containerd/certs.d\"
-";
-$file->contents->source = "data:," . rawurlencode($content);
-$ignition->storage->files[] = $file;
-
 foreach($caching_servers as $cache_srv) {
-    $dir = (object)[];
-    $dir->path = "/etc/containerd/certs.d/" . $cache_srv['name'];
-    $ignition->storage->directories[] = $dir;
+  $dir = (object)[];
+  $dir->path = "/etc/containerd/certs.d/" . $cache_srv['name'];
+  $ignition->storage->directories[] = $dir;
 
-    $file = (object)[];
-    $file->path = "/etc/containerd/certs.d/" . $cache_srv['name'] . "/hosts.toml";
-    $file->contents = (object)[];
-    $file->contents->compression = "";
-    $content = "server = \"" . $cache_srv['server'] . "\"
+  $file = (object)[];
+  $file->path = "/etc/containerd/certs.d/" . $cache_srv['name'] . "/hosts.toml";
+  $file->contents = (object)[];
+  $file->contents->compression = "";
+  $content = "server = \"" . $cache_srv['server'] . "\"
 
 [host.\"" . $cache_srv['cache'] . "\"]
-  capabilities = [\"pull\", \"resolve\"]
-  override_path = true
+capabilities = [\"pull\", \"resolve\"]
+override_path = true
 ";
-    $file->contents->source = "data:," . rawurlencode($content);
-    $ignition->storage->files[] = $file;
+  $file->contents->source = "data:," . rawurlencode($content);
+  $ignition->storage->files[] = $file;
 }
+
+$overrides = "version = 2
+
+[plugins]
+  [plugins.\"io.containerd.grpc.v1.cri\"]
+    [plugins.\"io.containerd.grpc.v1.cri\".containerd]
+      [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes]
+        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc]
+          runtime_type = "io.containerd.runc.v2"
+          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.options]
+            SystemdCgroup = true
+    [plugins.\"io.containerd.grpc.v1.cri\".registry]
+      config_path = \"/etc/containerd/certs.d\"
+";
 
 // Configure registry authentication
 foreach($registry_auth as $auth) {
-    $file = (object)[];
-    $file->path = "/etc/containerd/config.d/auth_" . $auth['registry'] . ".toml";
-    $file->contents = (object)[];
-    $file->contents->compression = "";
-    $content = "version = 2
-
-[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth['registry'] . "\".auth]
-  username = \"" . $auth['username'] . "\"                          
-  password = \"" . $auth['password'] . "\"
+    $overrides .= "
+      [plugins.\"io.containerd.grpc.v1.cri\".registry.configs]
+        [plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth['registry'] . "\"]
+          [plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"" . $auth['registry'] . "\".auth]
+            username = \"" . $auth['username'] . "\"
+            password = \"" . $auth['password'] . "\"
 ";
-    $file->contents->source = "data:," . rawurlencode($content);
-    $ignition->storage->files[] = $file;
 }
+
+// Add overrides to file list
+$file = (object)[];
+$file->path = "/etc/containerd/config.d/overrides.toml";
+$file->contents = (object)[];
+$file->contents->compression = "";
+$file->contents->source = "data:," . rawurlencode($overrides);
+$ignition->storage->files[] = $file;
 
 // Create kubeadm config for init and join
 $file = (object)[];
