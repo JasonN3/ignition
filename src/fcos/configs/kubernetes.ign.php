@@ -122,7 +122,7 @@ $overrides = "version = 2
     [plugins.\"io.containerd.grpc.v1.cri\".containerd]
       [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes]
         [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc]
-          runtime_type = "io.containerd.runc.v2"
+          runtime_type = \"io.containerd.runc.v2\"
           [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.options]
             SystemdCgroup = true
     [plugins.\"io.containerd.grpc.v1.cri\".registry]
