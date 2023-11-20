@@ -30,6 +30,7 @@ $filesystem->device = "/dev/disk/by-partlabel/containerd";
 $filesystem->format = "xfs";
 $filesystem->path = "/var/lib/containerd";
 $filesystem->label = "containerd";
+$filesystem->wipeFilesystem = true;
 $ignition->storage->filesystems[] = $filesystem;
 
 $systemd_unit = (object)[];
