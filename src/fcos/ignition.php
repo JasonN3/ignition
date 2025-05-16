@@ -19,6 +19,9 @@ $ignition->ignition->config->merge = [];
 $files = glob("configs/*.ign.php");
 
 foreach($files as $file) {
+    if($file == "configs/second_disk.ign.php" && !isset($second_disk)) {
+        continue;
+    }
     $merge = (object)[];
     $merge->source = $protocol . $_SERVER['HTTP_HOST'] . "/fcos/" . $file;
     $ignition->ignition->config->merge[] = $merge;
