@@ -1,6 +1,6 @@
 FROM quay.io/fedora/fedora:latest AS ipxe
 
-RUN dnf install -y git gcc binutils make perl xz-devel mtools genisoimage syslinux
+RUN dnf install -y git gcc binutils make perl xz-devel mtools genisoimage syslinux awk
 
 RUN git clone https://github.com/ipxe/ipxe.git /ipxe; cd /ipxe/src; sed -i 's/\#undef\sDOWNLOAD_PROTO_HTTPS/\#define DOWNLOAD_PROTO_HTTPS/' config/general.h; make bin/undionly.kpxe; make bin/ipxe.iso
 
